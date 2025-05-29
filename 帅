@@ -1,0 +1,43 @@
+{
+  "choice": [
+    {
+      "id": 1,
+      "question": "以下对Python程序设计风格描述错误的选项是？",
+      "options": [
+        "Python中是区分大小写的",
+        "增加缩进表示语句块开始",
+        "可以使用\\续行符",
+        "不允许多语句一行"
+      ],
+      "answer": 3
+    },
+    {
+      "id": 2,
+      "question": "以下关于Python语句的叙述，正确的是？",
+      "options": [
+        "每一行只能写一条语句",
+        "同一层次的语句必须对齐",
+        "语句可从任意位置开始",
+        "不允许多条语句一行"
+      ],
+      "answer": 1
+    }
+  ],
+  "judge": [
+    {
+      "id": 101,
+      "question": "Python可以将一条长语句分成多行显示，使用续航符“\\”",
+      "answer": true
+    },
+    {
+      "id": 102,
+      "question": "Python 语言要求所有浮点数必须带有小数部分",
+      "answer": true
+    },
+    {
+      "id": 103,
+      "question": "TextBlob库是专门用于中文自然语言处理的工具包",
+      "answer": false
+    }
+  ]
+}
