@@ -1,0 +1,103 @@
+import React, { useState, useEffect } from 'react';
+
+const questionBank = {
+  choice: [
+    {
+      id: 1,
+      question: '太阳是恒星吗？',
+      options: ['是', '不是'],
+      answer: 0,
+    },
+  ],
+  judge: [
+    {
+      id: 101,
+      question: '水的化学式是H2O。',
+      answer: true,
+    },
+  ],
+};
+
+export default function QuizApp() {
+  const [mode, setMode] = useState(null);
+  const [questions, setQuestions] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [wrongQuestions, setWrongQuestions] = useState([]);
+
+  useEffect(() => {
+    if (mode) {
+      const shuffled = [...questionBank[mode]].sort(() => Math.random() - 0.5);
+      setQuestions(shuffled);
+      setCurrentIndex(0);
+      setWrongQuestions([]);
+    }
+  }, [mode]);
+
+  const handleAnswer = (selected) => {
+    const current = questions[currentIndex];
+    const isCorrect = mode === 'choice' ? selected === current.answer : selected === current.answer;
+    if (!isCorrect) {
+      setWrongQuestions((prev) => [...prev, current]);
+    }
+    if (currentIndex + 1 < questions.length) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      alert('题目已完成！');
+    }
+  };
+
+  if (!mode) {
+    return (
+      <div style={{ textAlign: 'center', padding: 20 }}>
+        <h1>请选择题型</h1>
+        <button onClick={() => setMode('choice')}>选择题</button>
+        <button onClick={() => setMode('judge')}>判断题</button>
+      </div>
+    );
+  }
+
+  const current = questions[currentIndex];
+  if (!current) return <div>加载中...</div>;
+
+  return (
+    <div style={{ maxWidth: 600, margin: 'auto', padding: 20 }}>
+      <h2>
+        第 {currentIndex + 1} / {questions.length} 题
+      </h2>
+      <div style={{ margin: '20px 0' }}>
+        <p>{current.question}</p>
+        {mode === 'choice' ? (
+          current.options.map((opt, idx) => (
+            <button key={idx} onClick={() => handleAnswer(idx)} style={{ margin: 5 }}>
+              {opt}
+            </button>
+          ))
+        ) : (
+          <>
+            <button onClick={() => handleAnswer(true)} style={{ margin: 5 }}>
+              正确
+            </button>
+            <button onClick={() => handleAnswer(false)} style={{ margin: 5 }}>
+              错误
+            </button>
+          </>
+        )}
+      </div>
+
+      {currentIndex === questions.length - 1 && (
+        <div>
+          <h3>高频错题：</h3>
+          {wrongQuestions.length === 0 ? (
+            <p>无错题！</p>
+          ) : (
+            <ul>
+              {wrongQuestions.map((q) => (
+                <li key={q.id}>{q.question}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
